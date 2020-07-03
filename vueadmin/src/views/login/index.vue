@@ -2,10 +2,37 @@
     <div id="login">
         <div class="login-wrap">
             <ul class="menu-tab">
-                <li v-for="item in menuTab" :key="item.id" >
+                <li v-for="item in menuTab" :key="item.id" :class="{'current':item.current }" @click="toggleMneu(item)">
                     {{ item.txt }}
                 </li>
             </ul>
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"  class="login-from">
+
+                <el-form-item prop="username" class="item-from">
+                    <label>邮箱</label>
+                    <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="password" class="item-class">
+                    <label>密码</label>
+                    <el-input type="password" v-model="ruleForm.password" autocomplete="off" minlength="6"></el-input>
+                </el-form-item>
+
+                <el-form-item  prop="code" class="item-from">
+                    <label>验证码</label>
+                    <el-row :gutter="20">  <!--制定间隔是多少-->
+                        <el-col :span="15">  <el-input v-model.number="ruleForm.code"></el-input></el-col>
+                        <el-col :span="9">  <el-button class="block">获取验证码 </el-button></el-col>
+
+                    </el-row>
+
+
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm')" class=" login-btn block">提交</el-button>
+<!--                    <el-button @click="resetForm('ruleForm')">重置</el-button>-->
+                </el-form-item>
+            </el-form>
         </div>
     </div>
 </template>
@@ -13,12 +40,88 @@
     export default {
         name:"login",
         data(){
+            var checkAge = (rule, value, callback) => {
+                if (!value) {
+                     callback(new Error('验证码不能为空'));
+                }
+                callback();
+                // setTimeout(() => {
+                //     if (!Number.isInteger(value)) {
+                //         callback(new Error('请输入数字值'));
+                //     } else {
+                //         if (value < 18) {
+                //             callback(new Error('必须年满18岁'));
+                //         } else {
+                //             callback();
+                //         }
+                //     }
+                // }, 1000);
+            };
+            var validateUsername = (rule, value, callback) => {
+                let reg =/^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/;
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                }else if(!reg.test(value) ){
+                    callback(new Error('请输入用户名'));
+                }else {
+                    // if (this.ruleForm.checkPass !== '') {
+                    //     this.$refs.ruleForm.validateField('checkPass');
+                    // }
+                    callback(); //返回true
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    callback();
+                }
+            };
             return{
                 menuTab:[
-                    {txt:"登录"},
-                    {txt:"注册"}
-                ]
+                    {txt:"登录",current:true},
+                    {txt:"注册",current:false}
+                ],
+                ruleForm: {
+                    username: '',
+                    password: '',
+                    code: ''
+                },rules: {
+                    username: [
+                        { validator: validateUsername, trigger: 'blur' } /// blur 触发方式 失去焦点得时候会触发  validatePass 方法
+                    ],
+                    password: [
+                        { validator: validatePass2, trigger: 'blur' }
+                    ],
+                    code: [
+                        { validator: checkAge, trigger: 'blur' }
+                    ]
+                }
+
             }
+
+
+        },
+        methods:{
+            toggleMneu(data){
+                this.menuTab.forEach(elem=>{
+                    elem.current=false
+                })
+                data.current=true
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
 
         }
     }
@@ -46,5 +149,23 @@
         .current {
             background-color: rgba(0, 0, 0, .1);
         }
+    }
+    .login-from{
+        margin-top: 29px;
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 14px;
+            color: #fff;
+        }
+    }
+
+    .item-from { margin-bottom: 13px; }
+    .block{   //不加这个 他不会沾满一整行
+        width: 100%;
+        display: block;
+    }
+    .login-btn{
+        margin-top: 19px;
     }
 </style>
