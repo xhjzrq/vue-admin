@@ -18,6 +18,11 @@
                     <el-input type="password" v-model="ruleForm.password" autocomplete="off" minlength="6"></el-input>
                 </el-form-item>
 
+                <el-form-item prop="passwords" class="item-class" v-show="menuTab[1].current">
+                    <label>密码2</label>
+                    <el-input type="password" v-model="ruleForm.passwords" autocomplete="off" minlength="6"></el-input>
+                </el-form-item>
+
                 <el-form-item  prop="code" class="item-from">
                     <label>验证码</label>
                     <el-row :gutter="20">  <!--制定间隔是多少-->
@@ -36,7 +41,10 @@
         </div>
     </div>
 </template>
+
+
 <script>
+    import { stripscript, validatePass, validateEmail, validateVCode } from '@/utils/validate';
     export default {
         name:"login",
         data(){
@@ -45,23 +53,11 @@
                      callback(new Error('验证码不能为空'));
                 }
                 callback();
-                // setTimeout(() => {
-                //     if (!Number.isInteger(value)) {
-                //         callback(new Error('请输入数字值'));
-                //     } else {
-                //         if (value < 18) {
-                //             callback(new Error('必须年满18岁'));
-                //         } else {
-                //             callback();
-                //         }
-                //     }
-                // }, 1000);
             };
             var validateUsername = (rule, value, callback) => {
-                let reg =/^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/;
                 if (value === '') {
                     callback(new Error('请输入用户名'));
-                }else if(!reg.test(value) ){
+                }else if(validateEmail(value)){
                     callback(new Error('请输入用户名'));
                 }else {
                     // if (this.ruleForm.checkPass !== '') {
@@ -77,6 +73,17 @@
                     callback();
                 }
             };
+            var validatePasss = (rule, value, callback) => {
+                //以为 v-show 还是会发送请求  v-if 不会 这里采取v-show  或者 在 meuntab 中 价格type  在几个一个变量 点击时修改
+                if(!this.menuTab[1].current){
+                    callback();
+                }
+                if (value != this.ruleForm.password) {
+                    callback(new Error('不一样'));
+                } else {
+                    callback();
+                }
+            };
             return{
                 menuTab:[
                     {txt:"登录",current:true},
@@ -85,13 +92,17 @@
                 ruleForm: {
                     username: '',
                     password: '',
-                    code: ''
+                    code: '',
+                    passwords:''
                 },rules: {
                     username: [
                         { validator: validateUsername, trigger: 'blur' } /// blur 触发方式 失去焦点得时候会触发  validatePass 方法
                     ],
                     password: [
                         { validator: validatePass2, trigger: 'blur' }
+                    ],
+                    passwords: [
+                        { validator: validatePasss, trigger: 'blur' }
                     ],
                     code: [
                         { validator: checkAge, trigger: 'blur' }
