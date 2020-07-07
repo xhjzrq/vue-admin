@@ -60,7 +60,15 @@ module.exports = {
         https: false, // 编译失败时刷新页面
         hot: true, // 开启热加载
         hotOnly: false,
-        proxy: null, // 设置代理
+        proxy: {   // 跨域需要在前台修改这个  当然了 我也不知道 为什么   或者 后台 加上一个注解
+            '/devApi': {
+                target: "http://www.web-jshtml.cn/vue_admin_api/token", // /devapi  就等于这东西了
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/devApi': ''
+                }
+            }
+        },
         overlay: { // 全屏模式下是否显示脚本错误
             warnings: true,
             errors: true
