@@ -26,7 +26,9 @@ const routes = [
         meta: {
             name: "登录"
         },
-        component: () => import('../views/login/index')
+
+         component: () => import('../views/login/index')
+
 
     },
     {

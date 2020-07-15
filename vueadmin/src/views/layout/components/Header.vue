@@ -18,6 +18,7 @@
         name: "Header",
         setup(props,{root}){
             const  navMenuState =()=>{
+                console.log('aaaaadfadfas')
                 root.$store.commit("SET_ISCOLLAPSE")
             }
             return {
