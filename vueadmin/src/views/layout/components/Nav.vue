@@ -33,7 +33,7 @@
 
             const isCollapse =computed(()=>{
               return   root.$store.state.isCollapse
-                console.log( root.$store.state.isCollapse) ;
+                console.log( root.$store.state.app.isCollapse) ;
 
 
             })
