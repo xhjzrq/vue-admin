@@ -12,12 +12,22 @@ module.exports = {
      **/
     // eslint-disable-next-line no-unused-vars
     chainWebpack: (config) => {
+        const svgRule = config.module.rule("svg");
+        svgRule.uses.clear();
+        svgRule
+            .use("svg-sprite-loader")
+            .loader("svg-sprite-loader")
+            .options({
+                symbolId: "icon-[name]",
+                include: ["./src/icons"]
+            });
     },
     // eslint-disable-next-line no-unused-vars
     configureWebpack: (config) => {
         config.resolve = { // 配置解析别名
           extensions: ['.js', '.json', '.vue'], //自动添加文件名后缀
           alias: {
+              'vue': 'vue/dist/vue.js',  //改变vue 默认指向得位子
             '@': path.resolve(__dirname, './src'),
             '@c': path.resolve(__dirname, './src/components'),
             // 'common': path.resolve(__dirname, './src/common'),

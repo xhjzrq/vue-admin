@@ -11,7 +11,7 @@ li.el-submenu {
 .close {
     .el-submenu {
         &.is-opened {
-            > .el-submenu__title {
+             .el-submenu__title {
                 background-color: $mainCcolor !important;
             }
         }

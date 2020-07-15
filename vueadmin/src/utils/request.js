@@ -10,6 +10,8 @@ const service =axios.create({
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
+    //一般来说填写一些请求头中得信息
+   //  config.headers.Token='1111'
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -20,11 +22,13 @@ service.interceptors.request.use(function (config) {
 service.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     let data=response.data;
+    console.log('111111111111111111111111111111111111111111111')
     if (data.resCode!== 0) {
         /**
-         * element -ui 这个实在 main 得js 中引用得 vue.user() 只能在vue中使用  要想在js 中使用 需要单独引用js
+         * element -ui 这个实在 main 得js 中引用得 vue.user() 只能在vue中使用  要想在js 中使用 需要单独引用js  import {Message} from 'element-ui' /
          */
         Message.error(data.message);
+
         return Promise.reject(data);
     }else{
         return response;

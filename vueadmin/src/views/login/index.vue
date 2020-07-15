@@ -45,6 +45,8 @@
                 </el-form-item>
             </el-form>
         </div>
+
+        <button @click="test()">aa</button>
     </div>
 </template>
 
@@ -52,7 +54,7 @@
 <script>
     import {stripscript, validatePass, validateEmail, validateVCode} from '@/utils/validate';  //写{} 因为没有deault
     import {getSms,Register,Login} from '@/api/login';
-
+    //import  sha1 from'js-sha1';
     export default {
         name: "login",
         data() {
@@ -98,7 +100,7 @@
                     {txt: "注册", current: false}
                 ],
                 ruleForm: {
-                    username: '',
+                    username: 'xhj@qq.com',
                     password: '',
                     code: '',
                     passwords: ''
@@ -134,6 +136,7 @@
                 })
                 data.current = true
                 this.$refs['ruleForm'].resetFields();
+                this.clearCountDown();
             },
             submitForm(formName) {
 
@@ -157,11 +160,24 @@
                     password: this.ruleForm.password,
                     code: this.ruleForm.code,
                 }
-                Login(requsetData).then(response=>{
-                    console.log(response)
-                }).catch(error=>{
+               // console.log(this.$store.commit("SET_ISCOLLAPSE"))
+                this.$store.dispatch('login',requsetData)
+                .then(response=>{
+                            console.log(response)
+                            this.$router.push({
+                                name:'Console'
+                            })
+                        }).catch(error=>{
 
-                })
+                        })
+                // Login(requsetData).then(response=>{
+                //     console.log(response)
+                //     this.$router.push({
+                //         name:'Console'
+                //     })
+                // }).catch(error=>{
+                //
+                // })
             },
             register(){
                 let requsetData={
@@ -237,6 +253,9 @@
                 this.codebtstatus.status=false;
                 this.codebtstatus.text='获取验证码';
                 clearInterval(this.timer)
+            },
+            test(){
+                 this.$store.dispatch('aaa')
             }
 
 
