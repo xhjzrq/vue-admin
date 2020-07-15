@@ -2,7 +2,7 @@
     <div id="main-wrap">
         <div class="main-content">
             <div class="coontent">
-
+{{bbb}}
             </div>
         </div>
         <router-view/>
@@ -10,8 +10,16 @@
 </template>
 
 <script>
+    import { reactive, ref, isRef, toRefs, onMounted, watch } from '@vue/composition-api';
     export default {
-        name: "Main"
+        name: "Main",
+        setup(props,{root}){
+            const bbb = ref(root.$store.state.login.aaa)
+            return{
+                bbb
+            }
+
+        }
     }
 </script>
 

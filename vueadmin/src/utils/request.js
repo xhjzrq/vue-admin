@@ -3,6 +3,7 @@ import {Message} from 'element-ui' //必须大写
 //创建xaios 变量赋给 servce
 const BASEURL ='/devApi';
 const BASEURL1 ='http://www.web-jshtml.cn/vue_admin_api/token';
+
 const service =axios.create({
     baseURL:BASEURL,
     timeout:'15000'

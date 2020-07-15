@@ -161,7 +161,7 @@
                     code: this.ruleForm.code,
                 }
                // console.log(this.$store.commit("SET_ISCOLLAPSE"))
-                this.$store.dispatch('login',requsetData)
+                this.$store.dispatch('app/login',requsetData)
                 .then(response=>{
                             console.log(response)
                             this.$router.push({
@@ -255,7 +255,9 @@
                 clearInterval(this.timer)
             },
             test(){
-                 this.$store.dispatch('aaa')
+
+                this.$store.commit('login/aaa','10')
+                  console.log(this.$store.state.login.aaa)
             }
 
 

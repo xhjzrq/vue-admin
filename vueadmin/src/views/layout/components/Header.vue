@@ -18,8 +18,8 @@
         name: "Header",
         setup(props,{root}){
             const  navMenuState =()=>{
-                console.log('aaaaadfadfas')
-                root.$store.commit("SET_ISCOLLAPSE")
+
+                root.$store.commit("app/SET_COLLAPSE")
             }
             return {
                 navMenuState
